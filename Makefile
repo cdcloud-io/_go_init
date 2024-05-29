@@ -4,7 +4,7 @@
 # build variables
 BIN_DIR := bin
 ARTIFACT_NAME := my-app
-URL_PATH := github.com/cdcloud-io/
+URL_PATH := github.com/cdcloud-io
 .DEFAULT_GOAL := run
 
 .PHONY: all init build test test-with-cover generate-mocks clean run deps mod prod asm lint
