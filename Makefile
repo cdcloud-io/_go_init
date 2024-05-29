@@ -1,12 +1,10 @@
 # JAIK.Solutions Makefile for GO.
-
-# - @: only show the output of the command, not the command itself.
-# - targets marked as phony, to ensure that make treats them as commands rather than files. This helps avoid potential issues and makes the Makefile more robust.
+# @: only show the output of the command, not the command itself
 
 # build variables
 BIN_DIR := bin
-ARTIFACT_NAME := wwdb-queue-func
-URL_PATH := example.com
+ARTIFACT_NAME := my-app
+URL_PATH := github.com/cdcloud-io/
 .DEFAULT_GOAL := run
 
 .PHONY: all init build test test-with-cover generate-mocks clean run deps mod prod asm lint
