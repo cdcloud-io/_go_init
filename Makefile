@@ -13,21 +13,25 @@ all: test build
 
 init:
 	@if [ ! -f go.mod ]; then \
-		if [ -z "${URL_PATH}" ]; then \
-			echo "Initializing Go module..."; \
-			go mod init ${ARTIFACT_NAME}; \
+		if [ -d "cmd" ]; then \
+			echo "Directory ./cmd already exists. Initialization aborted to prevent overwriting existing code."; \
 		else \
-			echo "Initializing Go module with URL path..."; \
-			go mod init ${URL_PATH}/${ARTIFACT_NAME}; \
+			if [ -z "${URL_PATH}" ]; then \
+				echo "Initializing Go module..."; \
+				go mod init ${ARTIFACT_NAME}; \
+			else \
+				echo "Initializing Go module with URL path..."; \
+				go mod init ${URL_PATH}/${ARTIFACT_NAME}; \
+			fi; \
+			mkdir -p cmd/${ARTIFACT_NAME}; \
+			mkdir -p pkg; \
+			mkdir -p internal; \
+			mkdir -p bin; \
+			mkdir -p docs; \
+			mkdir -p examples; \
+			echo -e "package main\n\nimport \"fmt\"\n\nfunc main() {\n\tfmt.Println(\"${ARTIFACT_NAME}\")\n}" > cmd/${ARTIFACT_NAME}/main.go; \
+			touch README.md; \
 		fi; \
-		mkdir -p cmd/${ARTIFACT_NAME}; \
-		mkdir -p pkg; \
-		mkdir -p internal; \
-		mkdir -p bin; \
-		mkdir -p docs; \
-		mkdir -p examples; \
-		touch cmd/${ARTIFACT_NAME}/main.go; \
-		touch README.md; \
 	else \
 		echo "Go module already initialized."; \
 	fi
