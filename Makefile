@@ -3,8 +3,8 @@
 
 # build variables
 BIN_DIR := bin
-ARTIFACT_NAME := my-app
-URL_PATH := github.com/cdcloud-io
+ARTIFACT_NAME := ""
+URL_PATH := ""
 .DEFAULT_GOAL := run
 
 .PHONY: all init build test test-with-cover generate-mocks clean run deps mod prod asm lint
@@ -28,8 +28,6 @@ init:
 		mkdir -p examples; \
 		touch cmd/${ARTIFACT_NAME}/main.go; \
 		touch README.md; \
-		touch .gitignore; \
-		echo "/bin" > .gitignore; \
 	else \
 		echo "Go module already initialized."; \
 	fi
