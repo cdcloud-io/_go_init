@@ -21,7 +21,7 @@ init:
 				go mod init ${ARTIFACT_NAME}; \
 			else \
 				echo "Initializing Go module with URL path..."; \
-				go mod init ${URL_PATH}/${ARTIFACT_NAME}; \
+				go mod init ${URL_PATH}; \
 			fi; \
 			mkdir -p cmd/${ARTIFACT_NAME}; \
 			mkdir -p bin; \

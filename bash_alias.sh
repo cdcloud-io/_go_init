@@ -8,7 +8,9 @@ alias setup_goproj='function _setup_makefile() {
     # Extract the URL_PATH from the Git configuration if a .git directory exists
     if [ -d ".git" ]; then
         GIT_URL=$(git config --get remote.origin.url)
-        URL_PATH=$(echo "$GIT_URL" | sed -E "s|.*[:/]([^/]+/[^/]+)\.git$|\\1|")
+        echo "GIT_URL: $GIT_URL"
+        URL_PATH=$(echo "$GIT_URL" | sed -E "s|git@([^:]+):([^/]+/[^/]+)\.git$|\\1/\\2|")
+        echo "GO MOD: $URL_PATH"
     else
         URL_PATH=""
     fi
