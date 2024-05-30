@@ -1,4 +1,4 @@
-# JAIK.Solutions Makefile for GO.
+# cdcloud-io Makefile for GO.
 # @: only show the output of the command, not the command itself
 
 # build variables
