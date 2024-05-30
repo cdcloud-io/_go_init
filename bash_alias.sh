@@ -1,4 +1,4 @@
-alias setup_goproj='function _setup_makefile() {
+alias go_init='function _setup_makefile() {
     wget -q https://raw.githubusercontent.com/cdcloud-io/go_init/main/Makefile -O Makefile;
     wget -q https://raw.githubusercontent.com/cdcloud-io/go_init/main/.gitignore -O .gitignore;
     
