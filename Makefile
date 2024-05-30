@@ -24,13 +24,15 @@ init:
 				go mod init ${URL_PATH}/${ARTIFACT_NAME}; \
 			fi; \
 			mkdir -p cmd/${ARTIFACT_NAME}; \
-			mkdir -p pkg; \
-			mkdir -p internal; \
 			mkdir -p bin; \
 			mkdir -p docs; \
 			mkdir -p examples; \
-			echo -e "package main\n\nimport \"fmt\"\n\nfunc main() {\n\tfmt.Println(\"${ARTIFACT_NAME}\")\n}" > cmd/${ARTIFACT_NAME}/main.go; \
+			mkdir -p internal; \
+			mkdir -p pkg; \
+			mkdir -p test; \
+			printf "package main\n\nimport \"fmt\"\n\nfunc main() {\n\tfmt.Println(\"%s\")\n}" "${ARTIFACT_NAME}" > cmd/${ARTIFACT_NAME}/main.go; \
 			touch README.md; \
+			printf "# %s" "${ARTIFACT_NAME}" > README.md; \
 		fi; \
 	else \
 		echo "Go module already initialized."; \
@@ -55,7 +57,7 @@ clean:
 	@rm -rf ${BIN_DIR}/${ARTIFACT_NAME}
 	@rm -rf vendor
 
-run: build
+run:
 	@go run cmd/${ARTIFACT_NAME}/main.go
 
 deps:
