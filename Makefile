@@ -3,8 +3,8 @@
 
 # build variables
 BIN_DIR := bin
-ARTIFACT_NAME := ""
-URL_PATH := ""
+ARTIFACT_NAME := go_proj1
+URL_PATH := 
 .DEFAULT_GOAL := run
 
 .PHONY: all init build test test-with-cover generate-mocks clean run deps mod prod asm lint
@@ -40,7 +40,8 @@ init:
 
 build:
 	@mkdir -p ${BIN_DIR}/${ARTIFACT_NAME}
-	@go build -v -o ${BIN_DIR}/${ARTIFACT_NAME}/${ARTIFACT_NAME} ./cmd/${ARTIFACT_NAME}
+	@go build -v -o ${BIN_DIR}/${ARTIFACT_NAME}/${ARTIFACT_NAME} cmd/${ARTIFACT_NAME}/main.go
+
 
 test:
 	@go test -v $(shell go list ./... | grep -v /test/)
