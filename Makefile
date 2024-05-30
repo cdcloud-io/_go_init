@@ -40,7 +40,7 @@ init:
 
 build:
 	@mkdir -p ${BIN_DIR}/${ARTIFACT_NAME}
-	@go build -v -o ${BIN_DIR}/${ARTIFACT_NAME}/${ARTIFACT_NAME} cmd/${ARTIFACT_NAME}/main.go
+	@go build -v -o ${BIN_DIR}/${ARTIFACT_NAME}/${ARTIFACT_NAME} cmd/${ARTIFACT_NAME}
 
 test:
 	@go test -v $(shell go list ./... | grep -v /test/)
