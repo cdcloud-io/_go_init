@@ -56,3 +56,4 @@ initialize go project using makefile
 ### `lint`
 - **Description**: Runs linting on the code with all enabled checks.
 - **Usage**: `make lint`
+---
