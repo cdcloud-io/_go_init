@@ -23,6 +23,8 @@ go.work.sum
 
 # Custom exclusions
 /localdev
+/secret*
+/secrets*
 *secret*
 
 ### additional files from OS's and IDE's ###
