@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"net/http"
 
-	"wwdb-queue-func/config"
-	"wwdb-queue-func/internal/queue"
-	"wwdb-queue-func/internal/router"
-	"wwdb-queue-func/pkg/ctxlogger"
-	"wwdb-queue-func/pkg/mongodb"
+	"{{ .App }}/config"
+	"{{ .App }}/internal/queue"
+	"{{ .App }}/internal/router"
+	"{{ .App }}/pkg/ctxlogger"
+	"{{ .App }}/pkg/mongodb"
 )
 
 func Init() {
