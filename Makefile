@@ -7,6 +7,7 @@ ARTIFACT_NAME := go_proj1
 URL_PATH := 
 .DEFAULT_GOAL := run
 
+# .PHONY as targets do not represent files.
 .PHONY: all init build test test-with-cover generate-mocks clean run deps mod prod asm lint
 
 all: test build
@@ -23,6 +24,7 @@ initapi:
 				echo "Initializing Go module with URL path..."; \
 				go mod init ${URL_PATH}; \
 			fi; \
+			mkdir -p api;
 			mkdir -p cmd/${ARTIFACT_NAME}; \
 			mkdir -p bin; \
 			mkdir -p config; \

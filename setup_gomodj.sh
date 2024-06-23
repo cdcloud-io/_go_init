@@ -3,7 +3,7 @@
 # add this file to a path directory, or use the bash alias
 
 # Function to set up a Go project
-function setup_goproj() {
+function setup_gomod() {
     # Download the Makefile and .gitignore
     wget -q https://raw.githubusercontent.com/cdcloud-io/go_init/main/Makefile -O Makefile
     wget -q https://raw.githubusercontent.com/cdcloud-io/go_init/main/.gitignore -O .gitignore
@@ -11,7 +11,7 @@ function setup_goproj() {
     # Extract the ARTIFACT_NAME from the current directory name
     ARTIFACT_NAME=$(basename "$(pwd)")
 
-    # Extract the URL_PATH from the Git configuration if a .git directory exists
+    # Extract the URL_PATH from the .git config if a .git directory exists
     if [ -d ".git" ]; then
         GIT_URL=$(git config --get remote.origin.url)
         URL_PATH=$(echo "$GIT_URL" | sed -E "s|.*[:/]([^/]+/[^/]+)\.git$|\\1|")
@@ -26,4 +26,5 @@ function setup_goproj() {
     echo "Makefile has been set up with ARTIFACT_NAME: $ARTIFACT_NAME and URL_PATH: $URL_PATH"
 }
 
-setup_goproj
+setup_gomod
+gomod_api
