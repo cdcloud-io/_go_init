@@ -1,0 +1,46 @@
+package user
+
+import "strconv"
+
+// User represents a user in the system with an ID, Name, and Powers.
+type User struct {
+	ID     uint     `json:"id"`
+	Name   string   `json:"name"`
+	Powers []string `json:"powers"`
+}
+
+// user function returns a slice of User structs.
+// This simulates a data source with predefined users.
+func user() []User {
+	return []User{
+		{
+			ID:     1,
+			Name:   "Stephen",
+			Powers: []string{"Null Pointer Exceptions", "Automation", "Resilience"},
+		},
+		{
+			ID:     2,
+			Name:   "Fran",
+			Powers: []string{"Makes Stephen Crazy", "Patience"},
+		},
+		{
+			ID:     3,
+			Name:   "Bret",
+			Powers: []string{"Azure Spending", "Patience", "Kindness"},
+		},
+	}
+}
+
+// loadUser function loads the user data into a map for quick lookup by user ID.
+// The map keys are strings, which are the string representation of the user IDs.
+func loadUser() map[string]User {
+	users := user() // Get the list of users
+	res := make(map[string]User, len(users))
+
+	// Convert each user ID to a string and use it as a key in the map.
+	for _, x := range users {
+		res[strconv.Itoa(int(x.ID))] = x
+	}
+
+	return res
+}

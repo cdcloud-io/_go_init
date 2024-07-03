@@ -1,0 +1,16 @@
+package server
+
+import (
+	"__MODULE_NAME__/internal/config"
+	"net/http"
+)
+
+// New creates and returns a new HTTP server instance configured with the provided config and router.
+func New(config config.Config, handler http.Handler) *http.Server {
+	s := &http.Server{
+		Addr:    config.Server.Host + ":" + config.Server.Port,
+		Handler: handler,
+	}
+
+	return s
+}

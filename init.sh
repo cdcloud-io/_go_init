@@ -53,23 +53,8 @@ if [ ! -f go.mod ]; then
         fi
 
         # Create necessary directories
-        mkdir -p api cmd/"${MODULE_NAME}" bin config docs examples internal/app internal/server/routes internal/server internal/endpoint2 internal/middleware pkg test
+        mkdir -p api cmd/"${MODULE_NAME}" bin config docs examples internal/app internal/config internal/endpoint/user internal/middleware/auth internal/middleware/trace internal/middleware/logging internal/server pkg test
 
-        # Create necessary files
-        touch config/config.yaml \
-              internal/app/app.go \
-              internal/server/routes.go \
-              internal/endpoint1/handler.go \
-              internal/endpoint1/endpoint1.go \
-              internal/endpoint2/handler.go \
-              internal/endpoint2/endpoint2.go \
-              internal/middleware/middleware.go \
-              internal/middleware/logging.go \
-              internal/middleware/auth.go \
-              internal/middleware/logic.go
-
-        # Create main.go file with a simple main function
-        printf "package main\n\nimport \"fmt\"\n\nfunc main() {\n\tfmt.Println(\"%s\")\n}" "${MODULE_NAME}" > cmd/"${MODULE_NAME}"/main.go
 
         # Create README.md with the project name
         printf "# %s\n" "${MODULE_NAME}" > README.md

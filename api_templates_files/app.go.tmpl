@@ -1,0 +1,93 @@
+package app
+
+import (
+	"context"
+	"fmt"
+	"__MODULE_NAME__/config"
+	"__MODULE_NAME__/internal/endpoint/user"
+	"__MODULE_NAME__/internal/middleware"
+	"__MODULE_NAME__/internal/router"
+	"__MODULE_NAME__/internal/server"
+	"net/http"
+	"os"
+	"os/signal"
+	"strings"
+	"syscall"
+	"time"
+)
+
+func Init() {
+	config := config.Load()
+	bootSplash(config)
+	routerv1 := router.New()
+
+	// the v1userhandler should be an instance of the user.Handler struct.
+	// This is done by initializing it as &user.Handler{}.
+	v1userhandler := &user.Handler{} // Initialize the Handler struct
+
+	// Assuming we want to use standard HTTP methods for routing
+	routerv1.HandleFunc("POST /v1/user", v1userhandler.Create)
+	routerv1.HandleFunc("GET /v1/user/{id}", v1userhandler.GetByID)
+	routerv1.HandleFunc("PUT /v1/user/{id}", v1userhandler.UpdateByID)
+	routerv1.HandleFunc("DELETE /v1/user/{id}", v1userhandler.DeleteByID)
+	routerv1.HandleFunc("PATCH /v1/user/{id}", v1userhandler.PatchByID)
+	routerv1.HandleFunc("OPTIONS /v1/user", v1userhandler.Options)
+
+	// add the /info endpoint
+	routerv1.HandleFunc("GET /info", server.InfoHandler(config))
+
+	// Wrap the router with the logging middleware
+	stackedHandler := middleware.CreateStack(
+		middleware.Logging,
+	)(routerv1)
+
+	srv := server.New(config, stackedHandler)
+
+	// Create a channel to listen for OS signals
+	stop := make(chan os.Signal, 1)
+	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
+
+	// Start the server in a goroutine
+	go func() {
+		fmt.Println("🌐 Server listening on: " + config.Server.Host + ":" + config.Server.Port)
+		fmt.Printf("\nLogging: \n")
+		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			fmt.Printf("🛑 Could not listen on %s:%s: %v\n", config.Server.Host, config.Server.Port, err)
+		}
+	}()
+
+	// Block until we receive an interrupt signal
+	<-stop
+
+	// Create a context with a timeout to allow for graceful shutdown
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	// Attempt to gracefully shut down the server
+	fmt.Println("\n🟨 Shutting down the server...")
+	if err := srv.Shutdown(ctx); err != nil {
+		fmt.Printf("🟨 Server forced to shutdown: %v\n", err)
+	} else {
+		fmt.Println("🟩 Server gracefully stopped")
+	}
+}
+
+func bootSplash(config config.Config) {
+	separator := strings.Repeat("=", 60)
+	indent := strings.Repeat(" ", 20)
+	fmt.Println("")
+	fmt.Println(separator)
+	fmt.Println(indent + " 🟦 " + config.App.Name + " 🟦 ")
+	fmt.Println(separator)
+
+	fmt.Println("   version: ................ " + config.App.Version)
+	fmt.Println("   env: .................... " + config.App.Env)
+	fmt.Println("   host: ................... " + config.Server.Host)
+	fmt.Println("   port: ................... " + config.Server.Port)
+	fmt.Println("   health_endpoint: ........ " + config.Server.HealthEndpoint)
+	fmt.Println("   info_endpoint: .......... " + config.Server.InfoEndpoint)
+	fmt.Println("   commit_sha: ............. " + config.App.CommitSha)
+	fmt.Println("   build_id: ............... " + config.App.BuildID)
+
+	fmt.Println(separator + "\n")
+}

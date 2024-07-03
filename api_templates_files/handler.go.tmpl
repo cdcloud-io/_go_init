@@ -1,0 +1,76 @@
+package user
+
+import (
+	"encoding/json"
+	"log"
+	"net/http"
+)
+
+// Handler is a type that handles HTTP requests for user operations.
+// It can have methods associated with it to handle different HTTP methods.
+type Handler struct{}
+
+// func (h *Handler) before the function name Create is called a method receiver.
+// It means that Create is a method that belongs to a Handler type.
+// The *Handler part means that h is a pointer to a Handler instance.
+
+// Create is a method that handles the creation of a new user.
+// It sends a response with status 201 (Created) and logs the request.
+func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusCreated)                                   // Sets the HTTP status code to 201 (Created)
+	log.Println("INFO, user.Create: received request to create a user") // Logs the request
+	w.Write([]byte("INFO: received request to create a user"))          // Sends a response body
+}
+
+// GetByID is a method that handles retrieving a user by their ID.
+// It fetches the user and returns it as a JSON response.
+func (h *Handler) GetByID(w http.ResponseWriter, r *http.Request) {
+	log.Println("handling READ request - Method:", r.Method) // Logs the request method
+
+	// This part assumes you have a way to load users and get the user ID from the request path
+	// userID := r.PathValue("id") // Gets the user ID from query parameters (assuming for this example)
+	userID := r.PathValue("id")
+	user, exists := loadUser()[userID] // Retrieves the user from a hypothetical loadUser function
+
+	if !exists {
+		w.WriteHeader(http.StatusNotFound) // If user not found, return 404 status
+		return
+	}
+
+	json.NewEncoder(w).Encode(user) // Encodes the user as JSON and writes it to the response
+}
+
+// UpdateByID is a method that handles updating a user by their ID.
+// Currently, it just logs the request method.
+func (h *Handler) UpdateByID(w http.ResponseWriter, r *http.Request) {
+	log.Println("Handling UPDATE request - Method:", r.Method) // Logs the request method
+}
+
+// DeleteByID is a method that handles deleting a user by their ID.
+// Currently, it just logs the request method.
+func (h *Handler) DeleteByID(w http.ResponseWriter, r *http.Request) {
+	log.Println("received DELETE request for user") // Logs the delete request
+}
+
+// PatchByID is a method that handles partially updating a user by their ID.
+// This function is currently empty.
+func (h *Handler) PatchByID(w http.ResponseWriter, r *http.Request) {
+	// Placeholder for handling PATCH requests
+}
+
+// Options is a method that handles HTTP OPTIONS requests.
+// This function is currently empty.
+func (h *Handler) Options(w http.ResponseWriter, r *http.Request) {
+	// Placeholder for handling OPTIONS requests
+}
+
+/*
+// loadUser is a placeholder function that simulates loading users.
+// In a real application, this would likely fetch data from a database.
+func loadUser() map[string]interface{} {
+	// This is just a mock function. Replace it with actual user loading logic.
+	return map[string]interface{}{
+		"123": map[string]string{"id": "123", "name": "John Doe"},
+	}
+}
+*/
