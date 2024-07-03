@@ -43,10 +43,7 @@ function go_init() {
             fi
 
             # Use sed to replace the placeholders in the Makefile
-            sed -i "s|^MODULE_NAME :=.*|MODULE_NAME := $MODULE_NAME|" Makefile
-            sed -i "s|^URL_PATH :=.*|URL_PATH := $URL_PATH|" Makefile
 
-            echo "Makefile has been set up with MODULE_NAME: $MODULE_NAME and URL_PATH: $URL_PATH"
             echo ''
             echo 'Initializing Module File and Directory Structure'
 
@@ -67,6 +64,11 @@ function go_init() {
             wget -q https://raw.githubusercontent.com/cdcloud-io/go_init/main/api_templates_files/build-dockerfile.sh -O ./build/build-dockerfile.sh
             wget -q https://raw.githubusercontent.com/cdcloud-io/go_init/main/api_templates_files/build-run-with-env.sh -O ./build/build-run-with-env.sh
             wget -q https://raw.githubusercontent.com/cdcloud-io/go_init/main/api_templates_files/Dockerfile -O ./build/docker/Dockerfile
+
+            sed -i "s|^MODULE_NAME :=.*|MODULE_NAME := $MODULE_NAME|" Makefile
+            sed -i "s|^URL_PATH :=.*|URL_PATH := $URL_PATH|" Makefile
+
+            echo "Makefile has been set up with MODULE_NAME: $MODULE_NAME and URL_PATH: $URL_PATH"
         fi
     else
         echo "GO module already initialized."
