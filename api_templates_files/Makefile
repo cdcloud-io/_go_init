@@ -57,9 +57,9 @@ deps:
 	@go get ./...
 
 # Manage Go modules
-mod: deps
-	@go mod download
+mod: 
 	@go mod tidy
+	@go mod download
 	@go mod vendor
 
 # Production build
