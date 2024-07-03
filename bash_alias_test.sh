@@ -35,8 +35,8 @@ function go_init() {
     done
 
     # Download the Makefile and .gitignore
-    wget -q https://raw.githubusercontent.com/cdcloud-io/go_init/main/Makefile -O Makefile
-    wget -q https://raw.githubusercontent.com/cdcloud-io/go_init/main/.gitignore -O .gitignore
+    wget -q https://raw.githubusercontent.com/cdcloud-io/go_init/main/api_templates_files/Makefile -O Makefile
+    wget -q https://raw.githubusercontent.com/cdcloud-io/go_init/main/api_templates_files/.gitignore -O .gitignore
     
     # Extract the MODULE_NAME from the current directory name
     MODULE_NAME=$(basename "$(pwd)")
@@ -77,6 +77,19 @@ function go_init() {
     mkdir -p example > /dev/null 2>&1                        ## optional use for app/code usage examples
     mkdir -p internal/{config,endpoint/user,middleware/auth,middleware/logging,middleware/trace,server} > /dev/null 2>&1 ## module/app internal packages
     mkdir -p test > /dev/null 2>&1                           ## unit/integration tests
+
+    # Download template files
+    wget -q https://raw.githubusercontent.com/cdcloud-io/go_init/main/api_templates_files/main.go.tmpl -O ./cmd/${MODULE_NAME}/main.go > /dev/null 2>&1
+    wget -q https://raw.githubusercontent.com/cdcloud-io/go_init/main/api_templates_files/app.go.tmpl -O ./internal/app/app.go > /dev/null 2>&1
+    wget -q https://raw.githubusercontent.com/cdcloud-io/go_init/main/api_templates_files/config.go.tmpl -O ./internal/config/config.go > /dev/null 2>&1
+    wget -q https://raw.githubusercontent.com/cdcloud-io/go_init/main/api_templates_files/config.yaml -O ./config/config.yaml > /dev/null 2>&1
+    wget -q https://raw.githubusercontent.com/cdcloud-io/go_init/main/api_templates_files/handler.go.tmpl -O ./internal/endpoint/user/handler.go > /dev/null 2>&1
+    wget -q https://raw.githubusercontent.com/cdcloud-io/go_init/main/api_templates_files/user.go.tmpl -O ./internal/endpoint/user/user.go > /dev/null 2>&1
+    wget -q https://raw.githubusercontent.com/cdcloud-io/go_init/main/api_templates_files/server.go.tmpl -O ./internal/server/server.go > /dev/null 2>&1
+    wget -q https://raw.githubusercontent.com/cdcloud-io/go_init/main/api_templates_files/build-dockerfile.sh -O ./build/build-dockerfile.sh > /dev/null 2>&1
+    wget -q https://raw.githubusercontent.com/cdcloud-io/go_init/main/api_templates_files/build-run-with-env.sh -O ./build/build-run-with-env.sh > /dev/null 2>&1
+    wget -q https://raw.githubusercontent.com/cdcloud-io/go_init/main/api_templates_files/Dockerfile -O ./build/docker/Dockerfile > /dev/null 2>&1
+
 
     # Create README.md if it does not exist
     if [ ! -f README.md ]; then
