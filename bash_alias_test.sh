@@ -79,7 +79,7 @@ function go_init() {
     mkdir -p config > /dev/null 2>&1                         ## config.yaml used by internal/config/config.go
     mkdir -p docs/img > /dev/null 2>&1                       ## module/app documentation and images
     mkdir -p example > /dev/null 2>&1                        ## optional use for app/code usage examples
-    mkdir -p internal/{config,endpoint/user,middleware/auth,middleware/logging,middleware/trace,server} > /dev/null 2>&1 ## module/app internal packages
+    mkdir -p internal/{app,config,endpoint/user,middleware/auth,middleware/logging,middleware/trace,server} > /dev/null 2>&1 ## module/app internal packages
     mkdir -p test > /dev/null 2>&1                           ## unit/integration tests
 
     # Download template files
