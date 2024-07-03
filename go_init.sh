@@ -13,6 +13,8 @@
 # Notes          : Ensure this script is sourced to run the function in the current shell.
 # ==============================================================================
 
+echo 'sourcing go_init.sh'
+
 # Function to set up a Go project
 function go_init() {
     # Download the Makefile and .gitignore
