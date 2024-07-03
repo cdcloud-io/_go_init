@@ -1,4 +1,5 @@
-#!/usr/bin/env bash
+# Source File
+# Add to .bashrc
 
 # ==============================================================================
 # Title          : Go Init Script
@@ -13,11 +14,21 @@
 # ==============================================================================
 
 # Function to set up a Go project
-function setup_gomod() {
+function go_init() {
     # Download the Makefile and .gitignore
     wget -q https://raw.githubusercontent.com/cdcloud-io/go_init/main/Makefile -O Makefile
     wget -q https://raw.githubusercontent.com/cdcloud-io/go_init/main/.gitignore -O .gitignore
     wget -q https://raw.githubusercontent.com/cdcloud-io/go_init/main/init.sh -O init.sh
+    wget -q https://raw.githubusercontent.com/cdcloud-io/go_init/main/api_templates_files/main.go.tmpl -O ./cmd/${MODULE_NAME}/main.go
+    wget -q https://raw.githubusercontent.com/cdcloud-io/go_init/main/api_templates_files/app.go.tmpl -O ./internal/app/app.go
+    wget -q https://raw.githubusercontent.com/cdcloud-io/go_init/main/api_templates_files/config.go.tmpl -O ./internal/config/config.go
+    wget -q https://raw.githubusercontent.com/cdcloud-io/go_init/main/api_templates_files/config.yaml -O ./config/config.yaml
+    wget -q https://raw.githubusercontent.com/cdcloud-io/go_init/main/api_templates_files/handler.go.tmpl -O ./internal/endpoint/user/handler.go
+    wget -q https://raw.githubusercontent.com/cdcloud-io/go_init/main/api_templates_files/user.go.tmpl -O ./internal/endpoint/user/user.go
+    wget -q https://raw.githubusercontent.com/cdcloud-io/go_init/main/api_templates_files/server.go.tmpl -O ./internal/server/server.go
+    wget -q https://raw.githubusercontent.com/cdcloud-io/go_init/main/api_templates_files/build-dockerfile.sh -O ./build/build-dockerfile.sh
+    wget -q https://raw.githubusercontent.com/cdcloud-io/go_init/main/api_templates_files/build-run-with-env.sh -O ./build/build-run-with-env.sh
+    wget -q https://raw.githubusercontent.com/cdcloud-io/go_init/main/api_templates_files/Dockerfile -O ./build/docker/Dockerfile
 
     # Extract the MODULE_NAME from the current directory name
     MODULE_NAME=$(basename "$(pwd)")
@@ -37,8 +48,5 @@ function setup_gomod() {
     echo "Makefile has been set up with MODULE_NAME: $MODULE_NAME and URL_PATH: $URL_PATH"
     echo ''
     echo 'Initializing Module File and Directory Structure'
-    
-
-
 }
 
