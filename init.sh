@@ -53,7 +53,14 @@ if [ ! -f go.mod ]; then
         fi
 
         # Create necessary directories
-        mkdir -p api cmd/"${MODULE_NAME}" bin config docs examples internal/app internal/config internal/endpoint/user internal/middleware/auth internal/middleware/trace internal/middleware/logging internal/server pkg test
+        mkdir -p api cmd/"${MODULE_NAME}" bin build/docker build/k8s config docs examples internal/app internal/config internal/endpoint/user internal/middleware/auth internal/middleware/trace internal/middleware/logging internal/server pkg test
+
+        # Pull template files
+        wget https://raw.githubusercontent.com/cdcloud-io/go_init/main/api_templates_files/main.go.tmpl -O ./cmd/${MODULE_NAME}/main.go
+        wget https://raw.githubusercontent.com/cdcloud-io/go_init/main/api_templates_files/app.go.tmpl -O ./internal/app/app.go
+        wget https://raw.githubusercontent.com/cdcloud-io/go_init/main/api_templates_files/build-dockerfile.sh -O ./build/build-dockerfile.sh
+        wget https://raw.githubusercontent.com/cdcloud-io/go_init/main/api_templates_files/build-run-with-env.sh -O ./build/build-run-with-env.sh
+
 
 
         # Create README.md with the project name
