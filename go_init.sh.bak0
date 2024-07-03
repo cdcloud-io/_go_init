@@ -48,7 +48,7 @@ function go_init() {
             echo 'Initializing Module File and Directory Structure'
 
             # Create necessary directories
-            mkdir -p api cmd/"${MODULE_NAME}" bin build/docker build/k8s config docs examples internal/app internal/config internal/endpoint/user internal/middleware/auth internal/middleware/trace internal/middleware/logging internal/server pkg test
+            mkdir -p api cmd/"${MODULE_NAME}" bin build/docker build/k8s config docs examples internal/app internal/config internal/endpoint/user internal/middleware/auth internal/middleware/trace internal/middleware/logging internal/server test
 
             # Download the Makefile and .gitignore
             wget -q https://raw.githubusercontent.com/cdcloud-io/go_init/main/Makefile -O Makefile
