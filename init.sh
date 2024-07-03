@@ -58,8 +58,14 @@ if [ ! -f go.mod ]; then
         # Pull template files
         wget https://raw.githubusercontent.com/cdcloud-io/go_init/main/api_templates_files/main.go.tmpl -O ./cmd/${MODULE_NAME}/main.go
         wget https://raw.githubusercontent.com/cdcloud-io/go_init/main/api_templates_files/app.go.tmpl -O ./internal/app/app.go
+        wget https://raw.githubusercontent.com/cdcloud-io/go_init/main/api_templates_files/config.go.tmpl -O ./internal/config/config.go
+        wget https://raw.githubusercontent.com/cdcloud-io/go_init/main/api_templates_files/config.yaml -O ./config/config.yaml
+        wget https://raw.githubusercontent.com/cdcloud-io/go_init/main/api_templates_files/handler.go.tmpl -O ./internal/endpoint/user/handler.go
+        wget https://raw.githubusercontent.com/cdcloud-io/go_init/main/api_templates_files/user.go.tmpl -O ./internal/endpoint/user/user.go
+        wget https://raw.githubusercontent.com/cdcloud-io/go_init/main/api_templates_files/server.go.tmpl -O ./internal/server/server.go
         wget https://raw.githubusercontent.com/cdcloud-io/go_init/main/api_templates_files/build-dockerfile.sh -O ./build/build-dockerfile.sh
         wget https://raw.githubusercontent.com/cdcloud-io/go_init/main/api_templates_files/build-run-with-env.sh -O ./build/build-run-with-env.sh
+        wget https://raw.githubusercontent.com/cdcloud-io/go_init/main/api_templates_files/Dockerfile -O ./build/docker/Dockerfile
 
 
 
