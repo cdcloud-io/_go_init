@@ -35,7 +35,7 @@ function go_init() {
     done
 
     # Scoped variable
-    URL_PATH=false
+    URL_PATH_VALUE=false
 
     # Download the Makefile and .gitignore
     wget -q https://raw.githubusercontent.com/cdcloud-io/go_init/main/api_templates_files/Makefile -O Makefile
@@ -68,7 +68,7 @@ function go_init() {
     else
         echo "Initializing Go module with URL path..."
         go mod init "${URL_PATH}"
-        URL_PATH=true
+        URL_PATH_VALUE=true
     fi
 
     # Create necessary directories
@@ -95,17 +95,17 @@ function go_init() {
     wget -q https://raw.githubusercontent.com/cdcloud-io/go_init/main/api_templates_files/Dockerfile -O ./build/docker/Dockerfile > /dev/null 2>&1
 
     # Replace template placeholders in the downloaded files
-    if [ "$URL_PATH" = true ]; then
+    if [ "$URL_PATH_VALUE" = true ]; then
         sed -i "s|__MODULE_NAME__|$URL_PATH|g" ./cmd/${MODULE_NAME}/main.go
         sed -i "s|__MODULE_NAME__|$URL_PATH|g" ./internal/app/app.go
         sed -i "s|__MODULE_NAME__|$URL_PATH|g" ./internal/config/config.go
-        sed -i "s|__MODULE_NAME__|$URL_PATH|g" ./config/config.yaml
+        sed -i "s|__MODULE_NAME__|$MODULE_NAME|g" ./config/config.yaml
         sed -i "s|__MODULE_NAME__|$URL_PATH|g" ./internal/endpoint/user/handler.go
         sed -i "s|__MODULE_NAME__|$URL_PATH|g" ./internal/endpoint/user/user.go
         sed -i "s|__MODULE_NAME__|$URL_PATH|g" ./internal/server/server.go
-        sed -i "s|__MODULE_NAME__|$URL_PATH|g" ./build/build-dockerfile.sh
-        sed -i "s|__MODULE_NAME__|$URL_PATH|g" ./build/build-run-with-env.sh
-        sed -i "s|__MODULE_NAME__|$URL_PATH|g" ./build/docker/Dockerfile
+        sed -i "s|__MODULE_NAME__|$MODULE_NAME|g" ./build/build-dockerfile.sh
+        sed -i "s|__MODULE_NAME__|$MODULE_NAME|g" ./build/build-run-with-env.sh
+        sed -i "s|__MODULE_NAME__|$MODULE_NAME|g" ./build/docker/Dockerfile
     else
         sed -i "s|__MODULE_NAME__|$MODULE_NAME|g" ./cmd/${MODULE_NAME}/main.go
         sed -i "s|__MODULE_NAME__|$MODULE_NAME|g" ./internal/app/app.go
@@ -119,7 +119,8 @@ function go_init() {
         sed -i "s|__MODULE_NAME__|$MODULE_NAME|g" ./build/docker/Dockerfile
     fi
 
-    echo '⤵️ Updating go.mod' 
+    echo '⤵️ Updating go.mod'
+    go get -u ./... > /dev/null 2>&1 
     go mod tidy > /dev/null 2>&1
     go mod download > /dev/null 2>&1
     go mod vendor > /dev/null 2>&1
