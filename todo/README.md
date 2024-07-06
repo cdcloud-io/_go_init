@@ -1,5 +1,7 @@
 # TODO
 
+ideas located in repo:
+
 <https://github.com/kubernetes/test-infra/blob/master/Makefile>
 
 ## Makefile
