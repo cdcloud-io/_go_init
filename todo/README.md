@@ -33,4 +33,3 @@ make REGISTRY=my-custom-registry.io
 - [ ] Decision logic of init.  (in alias / or makefile)
   
   - maybe Makefile init checks for internet connection and pulls an initscript from repo templates?
-
