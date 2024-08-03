@@ -16,6 +16,9 @@ clear
 echo '🟨 sourcing go_init.sh'
 sleep 1
 
+# Set GO BIN
+export PATH=$PATH:$(go env GOPATH):$(go env GOPATH)/bin
+
 # Function to set up a Go project
 function go_init() {
     # Check if the script is being run in a subdirectory of the user's home directory
@@ -79,7 +82,8 @@ function go_init() {
     mkdir -p config > /dev/null 2>&1                         ## config.yaml used by internal/config/config.go
     mkdir -p docs/img > /dev/null 2>&1                       ## module/app documentation and images
     mkdir -p example > /dev/null 2>&1                        ## optional use for app/code usage examples
-    mkdir -p internal/{app,config,endpoint/user,middleware/auth,middleware/logging,middleware/trace,server} > /dev/null 2>&1 ## module/app internal packages
+    mkdir -p internal/{app,config,${MODULE_NAME}_proto,endpoint/user,middleware/auth,middleware/logging,middleware/trace,server} > /dev/null 2>&1 ## module/app internal packages
+    mkdir -p protobuf
     mkdir -p test > /dev/null 2>&1                           ## unit/integration tests
 
     # Download template files
