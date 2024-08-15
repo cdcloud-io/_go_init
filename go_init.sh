@@ -30,7 +30,7 @@ function go_init() {
 
     # Check if the directory contains only .git/ and README.md
     for file in * .*; do
-        if [ "$file" != "." ] && [ "$file" != ".." ] && [ "$file" != "*" ] && [ "$file" != ".git" ] && [ "$file" != "README.md" ]; then
+        if [ "$file" != "." ] && [ "$file" != ".." ] && [ "$file" != "*" ] && [ "$file" != ".*" ] && [ "$file" != ".git" ] && [ "$file" != "README.md" ]; then
             echo ''
             echo "🟥 Error: Not an empty project. Only .git/ and README.md are allowed. Exiting..."
             return 1
