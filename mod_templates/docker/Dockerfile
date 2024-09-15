@@ -1,5 +1,5 @@
 # 1st stage, build the app
-FROM golang:1.22-bookworm as builder
+FROM golang:1.22-bookworm AS builder
 
 WORKDIR /builder
 RUN mkdir -p bin/output

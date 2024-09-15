@@ -29,6 +29,9 @@ lint:
 build: | $(BIN_DIR)
 	@go build -v -o ${BIN_DIR}/$(MODULE_NAME) cmd/${MODULE_NAME}/main.go
 
+build-proto:
+	@protoc --proto_path=protobuf protobuf/*.proto --go_out=/internal/ --go-grpc_out=.
+
 # Run the application
 run:
 	@go run cmd/${MODULE_NAME}/main.go
