@@ -26,6 +26,7 @@ go.work.sum
 /secret*
 /secrets*
 *secret*
+.env
 
 ### additional files from OS's and IDE's ###
 # OS's

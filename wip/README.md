@@ -1,4 +1,12 @@
-# TODO
+# wip
+
+- mirrored directory structure for work in progress code or artifacts
+
+## TODO
+
+- fix this README.md
+
+---
 
 ideas located in repo:
 
