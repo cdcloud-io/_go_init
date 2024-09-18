@@ -1,4 +1,3 @@
-# _GO_INIT
+# GO-INIT
 
-- Repo aimed at EVERYTHING GO for cdcloud.dev
-
+- GO initialization and styleguide for CDCLOUD
