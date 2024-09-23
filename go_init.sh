@@ -26,7 +26,7 @@ function go_init() {
         exit 1
     fi
 
-    curl -s https://raw.githubusercontent.com/cdcloud-io/go-init/main/go-init.sh | bash
+    curl -s https://raw.githubusercontent.com/cdcloud-io/go-init/refs/heads/develop/go_init_cli_remote.sh | bash
 
     if [ $? -eq 0 ]; then
         echo "GO template created successfully."
