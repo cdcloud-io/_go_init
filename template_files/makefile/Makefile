@@ -1,4 +1,4 @@
-# cdcloud-io Makefile for GO.
+# cdcloud.dev Makefile for GO.
 
 # INFO
 # @         | only show the output of the command, not the command itself
@@ -31,7 +31,7 @@ URL_PATH := <<__URL_PATH__>>
 help:
 	@printf "\n"
 	@printf "##########################################################\n"
-	@printf "#          📘 cdcloud-io GO build tool 📘                #\n"
+	@printf "#          📘 cdcloud.dev GO build tool 📘               #\n"
 	@printf "##########################################################\n"
 	@printf "\n"
 	@printf "📄 Makefile variables 📄\n"
@@ -66,6 +66,22 @@ help:
 $(BIN_DIR):
 	@mkdir -p $@
 
+vars:
+	@printf "\n"
+	@printf "##########################################################\n"
+	@printf "#          📘 cdcloud.dev Makefile VAR info 📘           #\n"
+	@printf "##########################################################\n"
+	@printf "\n"
+	@printf "📄 Makefile variables 📄\n"
+	@printf -- "------------------------\n"
+	@printf "VERSION: %s\n" "$(VERSION)"
+	@printf "BUILD: %s\n" "$(BUILD)"
+	@printf "BIN_DIR: %s\n" "$(BIN_DIR)"
+	@printf "MODULE_NAME: %s\n" "$(MODULE_NAME)"
+	@printf "URL_PATH: %s\n" "$(URL_PATH)"
+	@printf "GOBASE: %s\n" "$(GOBASE)"
+	@printf "\n"
+
 # Formats the code to the official GO style guideline
 fmt:
 	@go fmt ./...
@@ -74,7 +90,7 @@ fmt:
 vet:
 	@go vet ./...
 
-# Lint analyzes source code to identify potential issues.
+# Lint analyzes source code to identify potential issues. (untested)
 lint:
 	@if ! command -v golangci-lint &> /dev/null; then \
 		echo "golangci-lint is not installed. Please install it first."; exit 1; \
@@ -83,32 +99,32 @@ lint:
 
 # Run the application
 run:
-	@go run cmd/$(MODULE_NAME)/main.go
+	@go run cmd/$(MODULE_NAME)/*.go
 
 # Build the application
-build: | $(BIN_DIR)
+build: deps | $(BIN_DIR)
 	@echo "  >  Building binary..."
-	@go build -v -o $(BIN_DIR)/$(MODULE_NAME) cmd/$(MODULE_NAME)/main.go
+	@go build -v -o $(BIN_DIR)/$(MODULE_NAME) cmd/$(MODULE_NAME)/*.go
 
 # Build the application for production delivery (strip symbols)
-build-prod: | $(BIN_DIR)
+build-prod: deps | $(BIN_DIR)
 	@echo "  >  Building Production binary..."
 	@go build -mod=vendor -ldflags="-s -w" -o $(BIN_DIR)/$(MODULE_NAME)/$(MODULE_NAME) ./cmd/$(MODULE_NAME) || (echo "Build failed with exit code $$?"; exit 1)
 
-# Build proto-buf code
+# Build proto-buf code (untested)
 build-proto:
 	@-protoc --proto_path=protobuf protobuf/*.proto --go_out=/internal/ --go-grpc_out=.
 
-# Run tests
+# Run tests (untested)
 test:
 	@go test -v $(shell go list ./... | grep -v /test/)
 
-# Run tests with coverage
+# Run tests with coverage (untested)
 test-with-cover:
 	@go test -v -coverprofile=cover.out $(shell go list ./... | grep -v /test/)
 	@go tool cover -html=cover.out -o cover.html
 
-# Generate mocks
+# Generate mocks (untested)
 generate-mocks:
 	@-mockery --all --with-expecter --keeptree
 
@@ -119,16 +135,12 @@ clean:
 	@-rm -rf vendor
 	@-rm -f cover.out cover.html
 
-# Get dependencies
+# Dependancy management
 deps:
 	@go get ./...
-
-# Fix/Tidy GO modules
-tidy: deps
 	@go mod tidy
 	@go mod download
-	@go mod vendor
 
-# Generate assembly code
+# Generate assembly code (untested)
 asm:
 	@go tool compile -S cmd/$(MODULE_NAME)/main.go > $(MODULE_NAME).asm

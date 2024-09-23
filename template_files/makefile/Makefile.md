@@ -7,16 +7,6 @@
 
 ## Targets
 
-### `all`
-
-- **Description**: Runs tests and builds the project.
-- **Usage**: `make all`
-
-### `init`
-
-- **Description**: Initializes a new Go module and creates the standard project directory structure. Will not run if the module is already initialized. If `URL_PATH` is set, it uses `URL_PATH` as part of the module path.
-- **Usage**: `make init`
-
 ### `build`
 
 - **Description**: Builds the project and places the binary in the specified directory.

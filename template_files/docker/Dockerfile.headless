@@ -9,6 +9,7 @@ COPY go.mod go.sum ./
 RUN go mod tidy
 RUN go mod download
 RUN go fmt ./...
+RUN go vet ./...
 
 COPY . .
 
@@ -18,7 +19,9 @@ RUN go build -ldflags="-s -w" -o bin/__MODULE_NAME__ ./cmd/__MODULE_NAME__
 
 # 2nd stage, build the production runtime image
 ## Note: Go is single binary executables.  we can use scratch, headless or slim images based on OS lib dependancies.
-FROM debian:bookworm-slim
+FROM scratch
+COPY --from=build /bin/hello /bin/hello
+CMD ["/bin/hello"]
 
 LABEL maintainedBy="cdcloud.dev"
 
@@ -47,6 +50,6 @@ RUN echo 'app-sa:x:1001:' >> /etc/group && \
   chown -R app-sa: /opt/app
 
 WORKDIR /opt/app
-COPY --from=build /build/bin/__MODULE_NAME__ .
+COPY --from=builder /builder/bin/__MODULE_NAME__ .
 
 ENTRYPOINT [ "/opt/app/__MODULE_NAME__" ]

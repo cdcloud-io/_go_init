@@ -1,4 +1,4 @@
-# cdcloud.io GOLANG .gitignore
+# World-Wide Group GOLANG .gitignore
 #
 # Binaries for programs and plugins
 *.exe
@@ -26,6 +26,7 @@ go.work.sum
 /secret*
 /secrets*
 *secret*
+.env
 
 ### additional files from OS's and IDE's ###
 # OS's
@@ -78,4 +79,3 @@ $RECYCLE.BIN/
 .history/
 *.vsix
 .ionide
-
