@@ -17,13 +17,13 @@ export PATH=$PATH:$(go env GOPATH):$(go env GOPATH)/bin
 # Function to set up a Go project
 function go_init() {
     clear
-    echo '🟨 sourcing go_init.sh'
+    echo '🟨 sourcing go_init.sh for CLI project using Hexagonal Architecture'
     sleep 1
     # Check if the script is being run in a subdirectory of the user's home directory
     if [ "$PWD" == "$HOME" ] || [[ "$PWD" != "$HOME/"* ]]; then
         echo ''
         echo "🟥 Error: Script must be run in a subdirectory of ${HOME}. Exiting..."
-        return 1
+        exit 1
     fi
 
     # Check if the directory contains only .git/ and README.md
@@ -31,7 +31,7 @@ function go_init() {
         if [ "$file" != "." ] && [ "$file" != ".." ] && [ "$file" != "*" ] && [ "$file" != ".*" ] && [ "$file" != ".git" ] && [ "$file" != "README.md" ]; then
             echo ''
             echo "🟥 Error: Not an empty project. Only .git/ and README.md are allowed. Exiting..."
-            return 1
+            exit 1
         fi
     done
 
@@ -40,7 +40,7 @@ function go_init() {
 
     # Download the Makefile and .gitignore
     wget -q https://raw.githubusercontent.com/cdcloud-io/go-init/refs/heads/develop/template_files/makefile/Makefile -O Makefile
-    wget -q https://raw.githubusercontent.com/cdcloud-io/go_init/main/api_templates_files/.gitignore -O .gitignore
+    wget -q https://raw.githubusercontent.com/cdcloud-io/go-init/refs/heads/develop/template_files/git/.gitignore -O .gitignore
 
     # Extract the MODULE_NAME from the current directory name
     MODULE_NAME=$(basename "$(pwd)")
@@ -50,24 +50,28 @@ function go_init() {
         GIT_URL=$(git config --get remote.origin.url)
         echo "GIT_URL: $GIT_URL"
         URL_PATH=$(echo "$GIT_URL" | sed -E "s|git@([^:]+):([^/]+/[^/]+)\.git$|\\1/\\2|")
+        URL_PATH_MSG=$URL_PATH
         echo "GO MOD: $URL_PATH"
     else
         URL_PATH=""
+        URL_PATH_MSG="<detected local project, URL_PATH not in use>"
     fi
 
     # Use sed to replace the placeholders in the Makefile
     sed -i "s|^MODULE_NAME :=.*|MODULE_NAME := $MODULE_NAME|" Makefile
     sed -i "s|^URL_PATH :=.*|URL_PATH := $URL_PATH|" Makefile
 
-    echo ''
-    echo "🟩 Makefile has been set up with MODULE_NAME: $MODULE_NAME and URL_PATH: $URL_PATH"
+    echo '|'
+    echo "└── Makefile has been set up with MODULE_NAME: $MODULE_NAME and URL_PATH: $URL_PATH_MSG"
     echo ''
 
     if [ -z "${URL_PATH}" ]; then
-        echo "Initializing Go module..."
+        echo '|'
+        echo "└── Initializing Go module..."
         go mod init "${MODULE_NAME}"
     else
-        echo "Initializing Go module with URL path..."
+        echo '|'
+        echo "└── Initializing Go module with URL path..."
         go mod init "${URL_PATH}"
         URL_PATH_VALUE=true
     fi
@@ -84,7 +88,7 @@ function go_init() {
 }
 
 go_init
-echo '🟩 sourcing go_init.sh'
+echo '🟩 GO template creation complete... GO FMT IT!!!'
 
 # Make sure to source this file in .bashrc
 # source /path/to/this/file/go_init.sh or source $HOME/go_init.sh
