@@ -1,3 +1,3 @@
 # GO-INIT
 
-- GO initialization and styleguide for CDCLOUD
+- GO module/project initialization and styleguide for CDCLOUD
