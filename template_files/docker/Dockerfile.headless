@@ -1,27 +1,29 @@
-# 1st stage, build the app
-FROM golang:1.22-bookworm AS build
+## 1st stage: build the app
+FROM golang:1.22-bookworm AS build-stage
+
+### Set the CGO_ENABLED environment variable to 0 to disable c lib dependancies
+ARG CGO_ENABLED=0
+
+### Set the compilation to linux
+ARG GOOS=linux
 
 WORKDIR /build
 RUN mkdir -p bin/output
-COPY go.mod go.sum ./
 
-# Ensure go.mod and go.sum are tidy and download dependencies
-RUN go mod tidy
+COPY go.mod go.sum ./
 RUN go mod download
-RUN go fmt ./...
-RUN go vet ./...
 
 COPY . .
 
-RUN pwd
-RUN ls
 RUN go build -ldflags="-s -w" -o bin/__MODULE_NAME__ ./cmd/__MODULE_NAME__
 
-# 2nd stage, build the production runtime image
-## Note: Go is single binary executables.  we can use scratch, headless or slim images based on OS lib dependancies.
-FROM scratch
-COPY --from=build /bin/hello /bin/hello
-CMD ["/bin/hello"]
+## 2nd stage: run tests
+# FROM build-stage AS run-test-stage
+# RUN go test -v ./...
+
+## 3rd stage: create the production runtime image
+### Note: Go is single binary executables.  we can use scratch, headless or slim images based on OS lib dependancies.
+FROM gcr.io/distroless/base-debian12 AS build-release-stage
 
 LABEL maintainedBy="cdcloud.dev"
 
@@ -31,9 +33,9 @@ ARG _APP_COMMIT_SHA=""
 ARG _APP_BUILD_ID=""
 ARG _APP_BUILD_DATE=""
 
-# Set by pipeline for docker build
-## _APP_<VARIABLE> are immutable environment variables that are "burned" into the docker image at build time.
-## These values need to be present for /info and /healthz endpoints for dynamic loadbalancing.
+### Set by pipeline for docker build
+### _APP_<VARIABLE> are immutable environment variables that are "burned" into the docker image at build time.
+### These values need to be present for /info and /healthz endpoints for dynamic loadbalancing.
 ENV _APP_NAME=${_APP_NAME}
 ENV _APP_VERSION=${_APP_VERSION}
 ENV _APP_COMMIT_SHA=${_APP_COMMIT_SHA}
@@ -41,7 +43,7 @@ ENV _APP_BUILD_ID=${_APP_BUILD_ID}
 ENV _APP_BUILD_DATE=${_APP_BUILD_DATE}
 ENV _APP_ENTRYPOINT=/opt/app/
 
-# create application service account user.  Note: many light distro containers do not have 'useradd' in /sbin
+### create application service account user.  Note: many light distro containers do not have 'useradd' in /sbin
 RUN echo 'app-sa:x:1001:' >> /etc/group && \
   echo 'app-sa:x:1001:1001::/home/app-sa:/bin/bash' >> /etc/passwd && \
   mkdir -p /home/app-sa && \
@@ -50,6 +52,6 @@ RUN echo 'app-sa:x:1001:' >> /etc/group && \
   chown -R app-sa: /opt/app
 
 WORKDIR /opt/app
-COPY --from=builder /builder/bin/__MODULE_NAME__ .
+COPY --from=build-stage /build/bin/__MODULE_NAME__ .
 
 ENTRYPOINT [ "/opt/app/__MODULE_NAME__" ]

@@ -6,22 +6,23 @@
 # ./...     | instructs go tool to apply the command to all files in local and subdirectories
 # printf -- | instructs printf to interpret -- as string and not options
 
-# load variables from a .env file.
--include .env
-
-# path variables
-GOBASE ?= $(CURDIR)
-
-# build variables
-VERSION := $(shell git describe --tags 2>/dev/null || echo "v0.0.1")
-BUILD := $(shell git rev-parse --short HEAD 2>/dev/null || echo "unknown")
-
-PROJECTNAME := $(shell basename "$(PWD)")
-
+## Module info
 BIN_DIR := bin
 MODULE_NAME := <<__MODULE_NAME__>>
 URL_PATH := <<__URL_PATH__>>
 
+## Load variables from a .env file.
+-include .env
+
+## Path variable
+GOBASE ?= $(CURDIR)
+
+## Build variables
+VERSION := $(shell git describe --tags 2>/dev/null || echo "v0.0.1")
+BUILD := $(shell git rev-parse --short HEAD 2>/dev/null || echo "unknown")
+PROJECTNAME := $(shell basename "$(PWD)")
+
+## Default (no flags)
 .DEFAULT_GOAL := help
 
 # .PHONY as targets do not represent files.
