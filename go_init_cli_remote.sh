@@ -11,13 +11,10 @@
 # Notes          : Ensure this script is sourced to run the function in the current shell.
 # ==============================================================================
 
-# Set GO BIN
-export PATH=$PATH:$(go env GOPATH):$(go env GOPATH)/bin
-
 # Function to set up a Go project
 function go_init() {
     clear
-    echo '🟨 sourcing go_init_cli_remote.sh for CLI project'
+    echo '🟨 Setup Started: GO CLI project'
     sleep 1
 
     # Check if the script is being run in a subdirectory of the user's home directory
@@ -90,5 +87,5 @@ function go_init() {
 
 go_init
 echo '│'
-echo '🟩 GO template creation complete... GO FMT IT!!!'
+echo '🟩 Setup Complete: GO CLI Project'
 echo ''
